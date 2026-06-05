@@ -125,64 +125,64 @@ int main()
         printf("3. Options\n");
         printf("4. Exit\n");
         char c = getch();
-        switch(c) // placeholder
+        system("cls");
+        while(1)
         {
-            case '1':
-                printf("===Sort the Beads===\n");
+            system("cls");
+            if(c == '1')
+            {
+                printf("==SORT THE BEADS==\n");
                 printf("1. Instructions\n");
                 printf("2. Start Game\n");
-                while(1)
+                printf("3. Back to Main Menu\n");
+                char option = getch();
+                if(option == '1')
                 {
-                    char c2 = getch();
-                    switch(c2)
-                    {
-                        case '1':
-                            getInstructions(1);
-                            break;
-                        case '2':
-                            printf("Starting Sort the Beads game...\n");
-                            getch();
-                            // call the function to start the game here
-                            break;
-                        default:
-                            printf("Invalid option. Please try again.\n");
-                            getch();
-                    }
+                    getInstructions(1);
                 }
-                break;
-            case '2':
-                printf("===Tower of Hanoi===\n");
+                else if(option == '2')
+                {
+                    int difficulty = SetDifficulty();
+                    // call the function to start Sort the Beads game with the selected difficulty
+                }
+                else if(option == '3')
+                {
+                    break; // go back to main menu
+                }
+            }
+            else if(c == '2')
+            {
+                printf("==TOWER OF HANOI==\n");
                 printf("1. Instructions\n");
                 printf("2. Start Game\n");
-                while(1)
+                printf("3. Back to Main Menu\n");
+                char option = getch();
+                if(option == '1')
                 {
-                    char c2 = getch();
-                    switch(c2)
-                    {
-                        case '1':
-                            getInstructions(2);
-                            break;
-                        case '2':
-                            printf("Starting Tower of Hanoi game...\n");
-                            getch();
-                            // call the function to start the game here
-                            break;
-                        default:
-                            printf("Invalid option. Please try again.\n");
-                            getch();
-                    }
+                    getInstructions(2);
                 }
-                break;
-            case '3':
-                printf("You have selected Options\n");
-                break;
-            case '4':
-                printf("Exiting the game...\n");
-                return 0;
-            default:
-                printf("Invalid option. Please try again.\n");
-               
+                else if(option == '2')
+                {
+                    int difficulty = SetDifficulty();
+                    // call the function to start Tower of Hanoi game with the selected difficulty
+                }
+                else if(option == '3')
+                {
+                    break; // go back to main menu
+                }
+            }
+            else if(c == '3')
+            {
+                // call the function to display options/settings
+            }
+            else if(c == '4')
+            {
+                printf("Thank you for playing! Goodbye!\n");
+                return 0; // exit the program
+                
+            }
         }
+        
         getch();
     }
     

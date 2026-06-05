@@ -11,8 +11,117 @@ struct LinkedStk{
 }; // a linked stack structure to be used in both games
 
 
+// Function declarations
 void getInstructions(int num);
 int SetDifficulty();
+void printCredits();
+struct LinkedStk* createStack(int difficulty);
+void printlist(struct LinkedStk* head, int numStacks);
+struct LinkedStk* fillrand(struct LinkedStk* head, int difficulty);
+
+
+struct LinkedStk* createStack(int difficulty) //input difficulty and make 5 7 10 stack for beads game and return head
+{
+    struct LinkedStk* head = NULL;
+    struct LinkedStk* current = NULL;
+    int numStacks;
+
+    if(difficulty == 1) // easy - 5 stacks
+    {
+        numStacks = 5;
+    }
+    else if(difficulty == 2) // medium - 7 stacks
+    {
+        numStacks = 7;
+    }
+    else if(difficulty == 3) // hard - 10 stacks
+    {
+        numStacks = 10;
+    }
+
+    for(int i = 0; i < numStacks; i++)
+    {
+        struct LinkedStk* newStack = (struct LinkedStk*)malloc(sizeof(struct LinkedStk));
+        newStack->top = -1;
+        newStack->next = NULL;
+
+        if(head == NULL)
+        {
+            head = newStack;
+            current = newStack;
+        }
+        else
+        {
+            current->next = newStack;
+            current = newStack;
+        }
+    }
+
+    return head;
+}
+
+void printlist(struct LinkedStk* head, int numStacks)
+{
+    for(int i = n-1 ; i > -1; i--)
+    {
+        struct LinkedStk* current = head;
+        while(current != NULL)
+        {
+            if(current->top >= i)
+            {
+                printf("| %c | ", current->data[i]);
+            }
+            else
+            {
+                printf("|   | ");
+            }
+            current = current->next;
+        }
+        printf("\n");
+    }
+    for(int i =0;i < numStacks; i++) printf("===");
+    printf("\n");
+    for(int i =0;i < numStacks; i++) printf("  %d  ", (i+1)%10);//as on keyboard 0 comes after 9 so we use (i+1)%10 to print 1-9 and then 0
+    printf("\n");
+}
+
+struct LinkedStk* fillrand(struct LinkedStk* head, int difficulty)
+{
+    char arr[] = "AAAAAAAAAABBBBBBBBBBCCCCCCCCCCDDDDDDDDDDEEEEEEEEEEFFFFFFFFFFGGGGGGGGGGHHHHHHHHHHIIIIIIIIIIJJJJJJJJJJ";
+    int numStacks;
+
+    if(difficulty == 1) numStacks = 5;
+    else if(difficulty == 2) numStacks = 7;
+    else if(difficulty == 3) numStacks = 10;
+    else numStacks = 10;
+
+    //WE SCARMBLE USING FISHER YATES SHUFFLE ALGORITHM
+     for(int i = numStacks * n - 1; i > 0; i--)
+     {
+        int j = rand() % (i + 1); //taken a random index from 0 to i
+        
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp; //swap
+     }
+     
+     //now we fill each stack with n beads from the scrambled array
+     struct LinkedStk* current = head;
+     int i = numStacks * n - 1;
+     while(current != NULL)
+     {
+        for(int j = 0; j < n; j++)
+        {
+            current->data[j] = arr[--i]; //fill the stack with n beads from the scrambled array
+        }
+        current->top = n - 1; //set top to n-1 as we have filled n beads
+        current = current->next;
+     }
+        return head;
+}
+
+
+
 
 
 void getInstructions(int num) //1 = Sort the Beads, 2 = Tower of Hanoi
@@ -56,6 +165,20 @@ void getInstructions(int num) //1 = Sort the Beads, 2 = Tower of Hanoi
     }
 
     printf("\nPress any key to return...");
+    getch();
+}
+
+void printCredits()
+{
+    system("cls");
+    printf("=== CREDITS ===\n\n");
+    printf("Created and Developed by:\n");
+    printf("Yash Joshi\n\n");
+    printf("About StackLab:\n");
+    printf("StackLab is a console-based game featuring classic data structure puzzles.\n");
+    printf("Test your problem-solving skills with Sort the Beads and Tower of Hanoi!\n\n");
+    printf("Thank you for playing!\n\n");
+    printf("Press any key to return...");
     getch();
 }
 
@@ -122,7 +245,7 @@ int main()
         printf("MAIN MENU\n");
         printf("1. Sort the Beads\n");
         printf("2. Tower of Hanoi\n");
-        printf("3. Options\n");
+        printf("3. Credits\n");
         printf("4. Exit\n");
         char c = getch();
         system("cls");
@@ -143,7 +266,7 @@ int main()
                 else if(option == '2')
                 {
                     int difficulty = SetDifficulty();
-                    // call the function to start Sort the Beads game with the selected difficulty
+                
                 }
                 else if(option == '3')
                 {
@@ -164,7 +287,7 @@ int main()
                 else if(option == '2')
                 {
                     int difficulty = SetDifficulty();
-                    // call the function to start Tower of Hanoi game with the selected difficulty
+                    
                 }
                 else if(option == '3')
                 {
@@ -173,7 +296,8 @@ int main()
             }
             else if(c == '3')
             {
-                // call the function to display options/settings
+                printCredits();
+                break; // go back to main menu
             }
             else if(c == '4')
             {

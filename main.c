@@ -120,6 +120,130 @@ struct LinkedStk* fillrand(struct LinkedStk* head, int difficulty)
         return head;
 }
 
+int gameloopSortTheBeads(struct LinkedStk* head, int numStacks)
+{
+    char inhand = ' ';
+    int movecount = 0;
+    
+    while(1)
+    {
+        system("cls");
+        printf("BEAD IN HAND %c\n\n", inhand);
+        printlist(head, numStacks);
+        printf("Select a stack to pick from or place into (1-%d): \n Press m to exit", numStacks);
+        
+        
+        char c = getch();
+        
+        if(c == 'm' || c == 'M')
+        {
+            printf("Are you sure you want to exit? (y/n)\n");
+            char confirm = getch();
+            if(confirm == 'y' || confirm == 'Y')
+            {
+                printf("Exiting the game. Goodbye!\n");
+                return 0; 
+            }
+            else
+            {
+                continue; 
+            } 
+        }
+        if(c < '1' || c > '0' + numStacks)
+        {
+            continue; // next loop will do
+        }
+        else // valid stack number
+        {
+            //convert char to int
+            int stackNum = c - '0';
+
+            //move to that stack
+            struct LinkedStk* current = head;
+            
+            for(int i = 1; i < stackNum; i++)
+            {
+                current = current->next;
+            }
+
+            //now we check both cases if hand is empty or not
+            if(inhand == ' ')
+            {
+                if(current->top == -1)
+                {
+                    continue; 
+                }
+                else
+                {
+                    inhand = current->data[current->top--];
+                }
+            }
+            else//bead in hand
+            {
+                if(current->top == n - 1)
+                {
+                    continue; 
+                }
+                else
+                {
+                    current->data[++current->top] = inhand;
+                    inhand = ' ';
+                    movecount++;
+                }
+
+            }
+        }
+    
+        //perform check
+        /*
+        1. for client to win at least one stack should be empty and hand should be empty. // so we check that first if thats not the case then we exit
+        2. if the case is true we check all bead in 1st array and so on.
+        3. if all bead are same then we mark and exit/
+        4. as all the function use continue the check is made only when a legal move is made
+        */
+
+        if(inhand == ' ')
+        {
+            struct LinkedStk* current = head;
+            int emptyStackCount = 0; //bool
+            while(current != NULL)
+            {
+                if(current->top == -1)
+                {
+                    emptyStackCount++;
+                    break;
+                }
+                current = current->next;
+            }
+            if(emptyStackCount == 0)
+            {
+                continue; // next loop will do
+            }
+            else
+            {
+                current = head;
+                while(current != NULL)
+                {
+                    if(current->top != -1)
+                    {
+                        char beadType = current->data[0];
+                        for(int i = 1; i <= current->top; i++)
+                        {
+                            if(current->data[i] != beadType)
+                            {
+                            continue; // next loop will do
+                            }
+                        }
+                        current = current->next;//will check all the stack and if all stack are of same bead type then we will exit
+                    }
+                }
+                //if we reached this point the player has won the game
+                
+                return 1;//PLACEHOLDER FOR WIN CONDITION, CAN BE USED TO DISPLAY WIN MESSAGE AND MOVES TAKEN
+            }
+        }         
+    }
+}
 
 
 

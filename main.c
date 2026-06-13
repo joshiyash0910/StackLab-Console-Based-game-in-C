@@ -96,7 +96,7 @@ struct LinkedStk* fillrand(struct LinkedStk* head, int difficulty)
     else numStacks = 10;
 
     //WE SCARMBLE USING FISHER YATES SHUFFLE ALGORITHM
-     for(int i = numStacks * n - 1; i > 0; i--)
+     for(int i = (numStacks-1) * n ; i > 0; i--)
      {
         int j = rand() % (i + 1); //taken a random index from 0 to i
         
@@ -125,8 +125,10 @@ int gameloopSortTheBeads(struct LinkedStk* head, int numStacks)
     char inhand = ' ';
     int movecount = 0;
     
+    
     while(1)
     {
+        int hasWon = 1;
         system("cls");
         printf("BEAD IN HAND %c\n\n", inhand);
         printlist(head, numStacks);
@@ -146,7 +148,7 @@ int gameloopSortTheBeads(struct LinkedStk* head, int numStacks)
             }
             else
             {
-                continue; 
+                continue; // here continue works 
             } 
         }
         if(c < '1' || c > '0' + numStacks)
@@ -201,8 +203,9 @@ int gameloopSortTheBeads(struct LinkedStk* head, int numStacks)
         3. if all bead are same then we mark and exit/
         4. as all the function use continue the check is made only when a legal move is made
         */
+        if(inhand != ' ') continue;
 
-        if(inhand == ' ')
+        else
         {
             struct LinkedStk* current = head;
             int emptyStackCount = 0; //bool
@@ -231,15 +234,22 @@ int gameloopSortTheBeads(struct LinkedStk* head, int numStacks)
                         {
                             if(current->data[i] != beadType)
                             {
-                            continue; // next loop will do
+                            hasWon=0;
+                            break;
                             }
                         }
-                        current = current->next;//will check all the stack and if all stack are of same bead type then we will exit
+                        if(!hasWon) 
+                            break;
                     }
+                    current = current->next;//will check all the stack and if all stack are of same bead type then we will exit
                 }
-                //if we reached this point the player has won the game
+                if(!hasWon) continue;
+                else
+                {
+                    return score();
+                }
                 
-                return 1;//PLACEHOLDER FOR WIN CONDITION, CAN BE USED TO DISPLAY WIN MESSAGE AND MOVES TAKEN
+                
             }
         }         
     }
